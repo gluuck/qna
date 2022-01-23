@@ -1,5 +1,5 @@
 class Question < ApplicationRecord
-  has_many :answers, class_name: "answer", foreign_key: "reference_id"
+  has_many :answers
   
   validates :title, :body, presence: true
 end
