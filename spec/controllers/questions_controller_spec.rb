@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) {create(:question)}
+  let(:question) {create(:question)}    
+  let(:user) { create(:user) }
+
+  before { log_in(user) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 3) }
@@ -26,6 +29,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
+
     before {get :new}
 
     it 'render show new' do      
