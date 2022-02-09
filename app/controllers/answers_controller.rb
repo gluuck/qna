@@ -4,14 +4,15 @@ class AnswersController < ApplicationController
   end
 
   def new
+    @answer = Answer.new
   end
 
   def create
-    question = Question.find(params[:question_id])
-    @answer = question.answers.new(answer_params)
-    if @answer.save
-      redirect_to question_answers_path
+    answer = current_user.answers.build(answer_params)
+    if answer.save
+      redirect_to answer.question, notice: 'Your answer successfully created.'
     else
+      flash[:notice] = answer.errors.full_messages.join(' ')
       render :new
     end
   end
@@ -26,12 +27,14 @@ class AnswersController < ApplicationController
   end
 
   def destroy
+    answer = Answer.find(params[:id])
+    answer.delete
+    redirect_to answer.question, notice: 'Your answer successfully deleted'
   end
 
   private
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body).merge(question_id: params[:question_id])
   end
-
 end
