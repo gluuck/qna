@@ -6,6 +6,7 @@ feature 'User can delete  question', %q{
   I'd like to be able to delete question
 } do
   given(:user) { create(:user) }
+  given(:not_author) { create(:user) }
   given(:question) { create(:question, user: user) }
 
   scenario 'Author delete his quetion' do
@@ -18,10 +19,10 @@ feature 'User can delete  question', %q{
   end
 
   scenario 'Not author can not delete question' do
-    sign_in(user)
+    sign_in(not_author)
     visit question_path(question)
     
-    expect(page).to_not have_link 'Delete question' unless user.author?(question)
+    expect(page).to_not have_link 'Delete question' 
   end
 
   scenario 'Unauthenticated user can not delete question' do

@@ -9,7 +9,7 @@ p  = @question.body
   ul
     li= answer.body
   - if current_user&.author?(answer)
-    = button_to 'Delete Answer', question_answer_path(@question, answer), method: :delete
+    = button_to 'Delete Answer', answer_path(answer), method: :delete
 
 = render 'answers/form'
 
