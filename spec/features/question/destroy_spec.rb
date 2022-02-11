@@ -12,6 +12,9 @@ feature 'User can delete  question', %q{
   scenario 'Author delete his quetion' do
     sign_in(user)
     visit question_path(question)
+
+    expect(page).to have_content question.title
+
     click_on 'Delete Question'
 
     expect(page).to have_content 'Your question successfully deleted'

@@ -27,6 +27,7 @@ class QuestionsController < ApplicationController
   
   def update
     if current_user.author?(@question)
+
       @question.update(question_params)
       redirect_to @question
     else
@@ -35,10 +36,14 @@ class QuestionsController < ApplicationController
   end
   
   def destroy
-    @question.delete
-    redirect_to questions_path, notice: 'Your question successfully deleted'
+    if current_user.author?(@question)
+      
+      @question.delete
+      redirect_to questions_path, notice: 'Your question successfully deleted'
+    else
+      redirect_to @question, notice: 'Cannot be deleted. You are not the author of the question.'
+    end
   end
-  
 
   private
   
