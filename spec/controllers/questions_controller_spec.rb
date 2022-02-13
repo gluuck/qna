@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) {create(:question)}
+  let(:question) {create(:question, user: user)}    
+  let(:user) { create(:user) }
+
+  before { log_in(user) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 3) }
@@ -26,6 +29,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
+
     before {get :new}
 
     it 'render show new' do      
@@ -67,6 +71,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
 
     context 'with valid atributes' do
+      before { log_in(user) }
 
       it 'assigns the request questions to @question' do
         patch :update, params: {id: question, question: attributes_for(:question)}
@@ -83,7 +88,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to updated question' do
         patch :update, params: {id: question, question: attributes_for(:question)}
-        expect(response).to redirect_to question
+        expect(response).to redirect_to assigns(:question)
       end
     end
 
@@ -97,21 +102,43 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq 'MyText'
       end
 
-      it 're-render edit view' do        
+      it 're-render edit view' do 
+
         expect(response).to render_template :edit
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    let!(:question) {create(:question)}
-    it 'deletes the question' do
-      expect{delete :destroy, params: {id: question}}.to change(Question, :count).by(-1)      
+
+    let!(:question) {create(:question, user: user)}
+
+    context 'user is author' do
+      before { log_in(user) }
+
+      it 'deletes the question' do
+        expect{delete :destroy, params: {id: question}}.to change(Question, :count).by(-1)      
+      end
+
+      it 'redirect to index' do
+        delete :destroy, params: {id: question}
+        expect(response).to redirect_to questions_path
+      end
     end
 
-    it 'redirect to index' do
-      delete :destroy, params: {id: question}
-      expect(response).to redirect_to questions_path
+    context 'user is not author' do
+      let!(:not_author) { create :user }
+
+      before { log_in(not_author) }
+
+      it 'cannot delete the question' do
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
+
+      it 'redirects to question' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to assigns(:question)
+      end
     end
   end
 end
