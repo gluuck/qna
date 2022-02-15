@@ -1,16 +1,16 @@
+= Time.zone.now
+.answer_errors
+  #question_id
 h1 = @question.title
-p  = @question.body 
+p  = @question.body
 
 - if current_user&.author?(@question)
   = button_to 'Delete Question', question_path(@question), method: :delete
 
-- @question.answers.each do |answer|
-  
-  ul
-    li= answer.body
-  - if current_user&.author?(answer)
-    = button_to 'Delete Answer', answer_path(answer), method: :delete
+.answers
+  #answer_id
+    = render @question.answers, answer: @answer
 
-= render 'answers/form'
+= render 'answers/form', locals:{answer: Answer.new}
 
 = link_to 'Back', questions_path

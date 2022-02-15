@@ -1,0 +1,8 @@
+<div id="<%= dom_id(answer) %>">
+  <p><%= answer.body %></p>
+
+  <% if current_user&.author?(answer) %>
+    <%= link_to 'Edit', edit_answer_path(answer), data:{ 'turbo-method': :post} %>
+    <%= link_to 'Delete Answer', answer_path(answer), data:{ 'turbo-method': :delete} %>
+  <% end %>
+</div>

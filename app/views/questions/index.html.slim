@@ -1,9 +1,11 @@
-h3 'All Questions'
-table
-  thead
-    tr
-      th Title
-      th Body
-  tbody
-    = render @questions
-p= link_to 'Ask question', new_question_path 
+#all_questions
+  h3 'All Questions'
+  table
+    thead
+      tr
+        th Title
+        th Body
+    tbody
+      = render @questions
+#new_question
+  p= link_to 'Ask question', new_question_path

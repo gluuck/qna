@@ -4,15 +4,15 @@ class QuestionsController < ApplicationController
   def index
     @questions = Question.all
   end
-  
+
   def show
     @answer = Answer.new
   end
 
-  def new 
-    @question = current_user.questions.build   
+  def new
+    @question = current_user.questions.build
   end
-  
+
   def edit
   end
 
@@ -21,23 +21,23 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
-      render :new
+      render turbo_stream: turbo_stream.update('question_new', partial: 'questions/question_errors')
     end
   end
-  
+
   def update
     if current_user.author?(@question)
 
       @question.update(question_params)
       redirect_to @question
     else
-      render :edit, notice: 'You can`t update question'
+      render turbo_stream: turbo_stream.update('question_new', partial: 'questions/question_errors')
     end
   end
-  
+
   def destroy
     if current_user.author?(@question)
-      
+
       @question.delete
       redirect_to questions_path, notice: 'Your question successfully deleted'
     else
@@ -46,12 +46,12 @@ class QuestionsController < ApplicationController
   end
 
   private
-  
+
   def set_question
-    @question = Question.find(params[:id]) 
+    @question = Question.find(params[:id])
   end
 
   def question_params
     params.require(:question).permit(:title, :body)
-  end 
+  end
 end
