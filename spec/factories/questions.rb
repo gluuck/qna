@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :question do
     association(:user)
-    title { "MyString" }
-    body { "MyText" }
+    title { "MyQuestion" }
+    body { "QuestionText" }
 
     trait :invalid do
       title { nil }

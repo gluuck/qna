@@ -7,6 +7,7 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
+    @best_answer = @question.best_answer
   end
 
   def new
@@ -14,6 +15,7 @@ class QuestionsController < ApplicationController
   end
 
   def edit
+    render turbo_stream: turbo_stream.update(@question, partial: 'questions/form', locals: {question: @question})
   end
 
   def create
@@ -28,20 +30,25 @@ class QuestionsController < ApplicationController
   def update
     if current_user.author?(@question)
 
-      @question.update(question_params)
-      redirect_to @question
+      if @question.update(question_params)
+        render turbo_stream: turbo_stream.update(@question, partial: 'questions/question', locals: {question: @question})
+      else
+        render turbo_stream: turbo_stream.update('notice', partial: 'questions/question_errors')
+      end
     else
-      render turbo_stream: turbo_stream.update('question_new', partial: 'questions/question_errors')
+
     end
   end
 
   def destroy
-    if current_user.author?(@question)
-
-      @question.delete
-      redirect_to questions_path, notice: 'Your question successfully deleted'
-    else
-      redirect_to @question, notice: 'Cannot be deleted. You are not the author of the question.'
+    respond_to do |format|
+      if current_user.author?(@question)
+        @question.delete
+          format.turbo_stream {render turbo_stream: turbo_stream.remove(@question)}
+          format.html {redirect_to questions_path, notice: 'Your question successfully deleted'}
+      else
+        format.html {redirect_to @question, notice: 'Cannot be deleted. You are not the author of the question.'}
+      end
     end
   end
 

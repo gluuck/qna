@@ -5,7 +5,9 @@
       tr
         th Title
         th Body
+        th Action
     tbody
-      = render @questions
+    #question_error
+      = render @questions.order(created_at: :asc), question: @question
 #new_question
   p= link_to 'Ask question', new_question_path

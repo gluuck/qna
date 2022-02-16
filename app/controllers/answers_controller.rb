@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
-  before_action :set_answer, only: %i[show edit update destroy]
+  before_action :authenticate_user!, only: %i[create update destroy best_answer]
+  before_action :set_answer, only: %i[show edit update destroy best_answer]
 
   def index
   end
@@ -10,9 +11,9 @@ class AnswersController < ApplicationController
     @answer.user = current_user
     if @answer.save
       render turbo_stream: [ turbo_stream.update('answer_id', partial: @question.answers, locals: {answer: Answer.new}),
-      turbo_stream.update('notice', 'Your answer successfully created.' ) ]
+                             turbo_stream.update('notice', 'Your answer successfully created.' ) ]
     else
-      render turbo_stream: turbo_stream.update('question_id', partial: 'answers/answer_errors')
+      render turbo_stream: turbo_stream.update('notice', partial: 'answers/answer_errors')
     end
   end
 
@@ -30,17 +31,25 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user.author?(@answer)
-      @answer.delete
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: [turbo_stream.remove(@answer),
-                                turbo_stream.update('notice', 'Your answer successfully deleted')]
-        end
-        format.html{redirect_to @answer.question, notice: 'Your answer successfully deleted'}
+    respond_to do |format|
+      if current_user.author?(@answer)
+          @answer.delete
+            format.turbo_stream do
+              render turbo_stream: [turbo_stream.remove(@answer),
+                                    turbo_stream.update('notice', 'Your answer successfully deleted')]
+            end
+            format.html{redirect_to @answer.question, notice: 'Your answer successfully deleted'}
+      else
+        format.html{redirect_to @answer.question, notice: 'You can`t delete answer'}
       end
-    else
-      redirect_to @answer.question, notice: 'You can`t delete answer'
+    end
+  end
+
+  def best_answer
+    @question = @answer.question
+    if current_user&.author?(@question)
+      @question.set_best_answer(@answer)
+      render turbo_stream: turbo_stream.prepend('answer_id', partial: 'answers/answer', locals:{answer: @answer})
     end
   end
 

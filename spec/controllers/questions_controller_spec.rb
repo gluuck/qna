@@ -41,7 +41,7 @@ RSpec.describe QuestionsController, type: :controller do
     before {get :edit, params: {id: question}}
 
     it 'render edit view' do
-      expect(response).to render_template :edit
+      expect(response).to render_template "questions/_form"
     end
   end
 
@@ -88,7 +88,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to updated question' do
         patch :update, params: {id: question, question: attributes_for(:question)}
-        expect(response).to redirect_to assigns(:question)
+        expect(response).to render_template 'questions/_question'
       end
     end
 
@@ -103,7 +103,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 're-render edit view' do
-        expect(response).to render_template('questions/_question_errors')
+        expect(response).to render_template 'questions/_question_errors'
       end
     end
   end

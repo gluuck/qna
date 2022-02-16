@@ -1,4 +1,7 @@
 tr
-  th= question.title
+  th id="#{dom_id(question)}"= question.title
   th= question.body
   th= link_to  "Show", question_path(question)
+  - if current_user&.author?(question)
+    th= link_to 'Edit', edit_question_path(question), data:{ 'turbo-method': :post}
+    th= link_to 'Delete Answer', question_path(question), data:{ 'turbo-method': :delete}

@@ -1,6 +1,6 @@
 = Time.zone.now
-.answer_errors
-  #question_id
+
+#question_id
 h1 = @question.title
 p  = @question.body
 
@@ -8,8 +8,10 @@ p  = @question.body
   = button_to 'Delete Question', question_path(@question), method: :delete
 
 .answers
+  = turbo_stream_from @question, :answer_id
   #answer_id
-    = render @question.answers, answer: @answer
+    = render @best_answer if @question.best_answer
+    = render @question.answers.where.not(id: @question.best_answer), answer: @answer
 
 = render 'answers/form', locals:{answer: Answer.new}
 
