@@ -7,7 +7,9 @@ feature 'The user can choose the best answer to the question', %q{
 } do
   given!(:user) { create(:user) }
   given!(:not_author) { create(:user) }
-
+  given!(:question) { create(:question, user: user)}
+  given!(:answer) { create(:answer, question: question, user: not_author )}
+  
   describe 'Unauthenticated user' do
     scenario 'can not choose the best answer', js: true do
       question = create :question, user: user
@@ -20,8 +22,6 @@ feature 'The user can choose the best answer to the question', %q{
     context 'Author of the question' do
       scenario 'can choose the best answer' do
         sign_in(user)
-        question = create :question, user: user
-        answer = create :answer, question: question, user: not_author
         question.set_best_answer(answer)
         best_answer = question.best_answer
         visit question_path(question)
