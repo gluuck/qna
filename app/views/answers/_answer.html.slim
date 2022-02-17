@@ -1,0 +1,10 @@
+div id= dom_id(answer)
+  ul
+    li= answer.body
+
+  - if current_user&.author?(answer)
+    = link_to 'Edit', edit_answer_path(answer), data:{ 'turbo-method': :post}
+    = link_to 'Delete Answer', answer_path(answer), data:{ 'turbo-method': :delete}
+
+  -if current_user&.author?(@question)
+    = link_to 'Best answer', best_answer_answer_path(answer), data:{ 'turbo-method': :post}

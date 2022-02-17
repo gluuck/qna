@@ -8,6 +8,6 @@ class User < ApplicationRecord
   has_many :answers, dependent: :destroy
 
   def author?(object)
-    object.user_id == id
+    object&.user_id == id
   end
 end

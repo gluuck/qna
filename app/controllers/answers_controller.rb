@@ -1,17 +1,19 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!, only: %i[create update destroy best_answer]
+  before_action :set_answer, only: %i[show edit update destroy best_answer]
 
   def index
   end
 
   def create
-    question = Question.find(params[:question_id])
-    answer = question.answers.build(answer_params)
-    answer.user = current_user
-    if answer.save
-      redirect_to question, notice: 'Your answer successfully created.'
+    @question = Question.find(params[:question_id])
+    @answer = @question.answers.build(answer_params)
+    @answer.user = current_user
+    if @answer.save
+      render turbo_stream: [ turbo_stream.update('answer_id', partial: @question.answers, locals: {answer: Answer.new}),
+                             turbo_stream.update('notice', 'Your answer successfully created.' ) ]
     else
-      flash[:notice] = answer.errors.full_messages.join(' ')
-      render 'questions/show'
+      render turbo_stream: turbo_stream.update('notice', partial: 'answers/answer_errors')
     end
   end
 
@@ -19,19 +21,35 @@ class AnswersController < ApplicationController
   end
 
   def edit
+    render turbo_stream: turbo_stream.update(@answer, partial: 'answers/form', locals: {answer: @answer})
   end
 
   def update
+    if @answer.update(answer_params)
+      render turbo_stream: turbo_stream.update(@answer, partial: 'answers/answer', locals: {answer: @answer})
+    end
   end
 
   def destroy
-    answer = Answer.find(params[:id])
-    if current_user.author?(answer)
-      
-      answer.delete
-      redirect_to answer.question, notice: 'Your answer successfully deleted'
-    else
-      redirect_to answer.question, notice: 'You can`t delete answer'
+    respond_to do |format|
+      if current_user.author?(@answer)
+          @answer.delete
+            format.turbo_stream do
+              render turbo_stream: [turbo_stream.remove(@answer),
+                                    turbo_stream.update('notice', 'Your answer successfully deleted')]
+            end
+            format.html{redirect_to @answer.question, notice: 'Your answer successfully deleted'}
+      else
+        format.html{redirect_to @answer.question, notice: 'You can`t delete answer'}
+      end
+    end
+  end
+
+  def best_answer
+    @question = @answer.question
+    if current_user&.author?(@question)
+      @question.set_best_answer(@answer)
+      render turbo_stream: turbo_stream.prepend('answer_id', partial: 'answers/answer', locals:{answer: @answer})
     end
   end
 
@@ -39,5 +57,9 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body)
+  end
+
+  def set_answer
+    @answer = Answer.find(params[:id])
   end
 end

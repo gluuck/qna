@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) {create(:question, user: user)}    
+  let(:question) {create(:question, user: user)}
   let(:user) { create(:user) }
 
   before { log_in(user) }
@@ -23,7 +23,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'GET #show' do
     before {get :show, params: {id: question}}
 
-    it 'render show view' do      
+    it 'render show view' do
       expect(response).to render_template :show
     end
   end
@@ -32,7 +32,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     before {get :new}
 
-    it 'render show new' do      
+    it 'render show new' do
       expect(response).to render_template :new
     end
   end
@@ -40,8 +40,8 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'GET #edit' do
     before {get :edit, params: {id: question}}
 
-    it 'render edit view' do      
-      expect(response).to render_template :edit
+    it 'render edit view' do
+      expect(response).to render_template "questions/_form"
     end
   end
 
@@ -63,7 +63,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
       it 're-render new view' do
         post :create, params: {question: attributes_for(:question, :invalid)}
-        expect(response).to render_template :new
+        expect(response).to render_template('questions/_question_errors')
       end
     end
   end
@@ -88,13 +88,13 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to updated question' do
         patch :update, params: {id: question, question: attributes_for(:question)}
-        expect(response).to redirect_to assigns(:question)
+        expect(response).to render_template 'questions/_question'
       end
     end
 
     context 'with invalid atributes' do
 
-      before {patch :update, params: {id: question, question: attributes_for(:question, :invalid)}}
+      before {patch :update, params: {id: question, question: attributes_for(:question, :invalid)}, format: :js}
 
       it 'does not change question' do
         question.reload
@@ -102,9 +102,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq 'MyText'
       end
 
-      it 're-render edit view' do 
-
-        expect(response).to render_template :edit
+      it 're-render edit view' do
+        expect(response).to render_template 'questions/_question_errors'
       end
     end
   end
@@ -117,7 +116,7 @@ RSpec.describe QuestionsController, type: :controller do
       before { log_in(user) }
 
       it 'deletes the question' do
-        expect{delete :destroy, params: {id: question}}.to change(Question, :count).by(-1)      
+        expect{delete :destroy, params: {id: question}}.to change(Question, :count).by(-1)
       end
 
       it 'redirect to index' do

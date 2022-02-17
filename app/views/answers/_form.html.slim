@@ -1,6 +1,6 @@
-= render 'shared/errors', resource: @answer
 - if current_user.present?
-  = form_with model: [@question, @answer], local: true do |f|
+  = form_with model: [@question, @answer],
+    data: {controller: 'reset-form', action: 'turbo:submit-end->reset-form#reset'} do |f|
     = f.label :body
     = f.text_area :body
     = f.submit 'Add Answer'
