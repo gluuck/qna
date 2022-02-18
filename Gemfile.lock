@@ -68,6 +68,22 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
+    aws-eventstream (1.2.0)
+    aws-partitions (1.554.0)
+    aws-sdk-core (3.126.2)
+      aws-eventstream (~> 1, >= 1.0.2)
+      aws-partitions (~> 1, >= 1.525.0)
+      aws-sigv4 (~> 1.1)
+      jmespath (~> 1.0)
+    aws-sdk-kms (1.54.0)
+      aws-sdk-core (~> 3, >= 3.126.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-s3 (1.112.0)
+      aws-sdk-core (~> 3, >= 3.126.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.4)
+    aws-sigv4 (1.4.0)
+      aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.16)
     bcrypt (3.1.16-java)
     bindex (0.8.1)
@@ -98,6 +114,10 @@ GEM
     diff-lcs (1.5.0)
     digest (3.1.0)
     digest (3.1.0-java)
+    dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     erubi (1.10.0)
     factory_bot (6.2.0)
       activesupport (>= 5.0.0)
@@ -118,6 +138,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jmespath (1.6.0)
     launchy (2.5.0)
       addressable (~> 2.7)
     loofah (2.13.0)
@@ -204,6 +225,7 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
+    redis (4.6.0)
     regexp_parser (2.2.0)
     reline (0.3.1)
       io-console (~> 0.5)
@@ -291,10 +313,12 @@ PLATFORMS
   x86-mswin32
 
 DEPENDENCIES
+  aws-sdk-s3
   bootsnap
   capybara
   debug
   devise
+  dotenv-rails
   factory_bot_rails
   importmap-rails
   jbuilder
@@ -303,6 +327,7 @@ DEPENDENCIES
   puma (~> 5.0)
   rails (~> 7.0.1)
   rails-controller-testing
+  redis (~> 4.0)
   rspec-rails (~> 5.0.0)
   selenium-webdriver
   shoulda-matchers (~> 5.0)
