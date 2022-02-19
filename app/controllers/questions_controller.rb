@@ -31,7 +31,7 @@ class QuestionsController < ApplicationController
     if current_user.author?(@question)
 
       if @question.update(question_params)
-        render turbo_stream: turbo_stream.update(@question, partial: 'questions/question', locals: {question: @question})
+        render turbo_stream: turbo_stream.update(@question, partial: 'questions/question_item', locals: {question: @question})
       else
         render turbo_stream: turbo_stream.update('notice', partial: 'questions/question_errors')
       end
