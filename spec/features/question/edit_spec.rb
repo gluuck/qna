@@ -22,10 +22,11 @@ feature 'User can edit his question', %q{
       background do
         sign_in(user)
         visit questions_path
-        lick_on 'Edit'
+        click_on 'Edit'
       end
+
       scenario 'edit his question' do
-        
+
         fill_in 'Title', with: 'edited title'
         fill_in 'Body',  with: 'edited body'
         click_on 'Ask'
@@ -35,7 +36,19 @@ feature 'User can edit his question', %q{
         expect(page).to have_content 'edited body'
         expect(page).to_not have_selector 'textarea'
       end
+
+      scenario 'add files when edited question' do
+        visit question_path(question)
+        attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Add file'
+        # visit question_path(question)
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
+
       scenario 'edit question with errors' do
+        click_on 'Edit'
         fill_in 'Title', with: ''
         fill_in 'Body', with: ''
         click_on 'Ask'

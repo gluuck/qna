@@ -3,4 +3,6 @@
     data: {controller: 'reset-form', action: 'turbo:submit-end->reset-form#reset'} do |f|
     = f.label :body
     = f.text_area :body
+    = f.label :files
+    = f.file_field :files, multiple: true, direct_upload: true
     = f.submit 'Add Answer'

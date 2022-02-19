@@ -18,11 +18,15 @@ feature 'The user can create an answers to the question ', %q{
       visit question_path(question)
       fill_in 'Body', with: 'Answer body'
 
+      attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb","#{Rails.root}/spec/spec_helper.rb"]
+
       click_on 'Add Answer'
 
       expect(current_path).to eq question_path(question)
       expect(page).to have_content 'Your answer successfully created.'
-      
+      expect(page).to have_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
+
       within '.answers' do
         expect(page).to have_content 'Answer body'
       end

@@ -8,4 +8,8 @@ Rails.application.routes.draw do
       post :best_answer, on: :member
     end
   end
+
+  resources :resource_files do
+    delete :destroy, on: :member
+  end
 end
