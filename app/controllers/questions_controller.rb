@@ -8,10 +8,12 @@ class QuestionsController < ApplicationController
   def show
     @answer = Answer.new
     @best_answer = @question.best_answer
+    @answer.links.build
   end
 
   def new
-    @question = current_user.questions.build
+    @question = Question.new
+    @question.links.build
   end
 
   def edit
@@ -55,10 +57,10 @@ class QuestionsController < ApplicationController
   private
 
   def set_question
-    @question = Question.includes(:user, :answers).with_attached_files.find(params[:id])
+    @question = Question.includes(:user, :answers, :links).with_attached_files.find(params[:id])
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title, :body, files: [], links_attributes: [:id, :name, :url])
   end
 end

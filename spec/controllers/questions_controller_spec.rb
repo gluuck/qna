@@ -26,6 +26,10 @@ RSpec.describe QuestionsController, type: :controller do
     it 'render show view' do
       expect(response).to render_template :show
     end
+
+    it 'assigns new link for question' do
+      expect(assigns(:answer).links.first).to be_a_new(Link)
+    end
   end
 
   describe 'GET #new' do
@@ -34,6 +38,10 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'render show new' do
       expect(response).to render_template :new
+    end
+
+    it "assigns a new Question to @question" do
+      expect(assigns(:question).links.first).to be_a_new(Link)
     end
   end
 
@@ -88,7 +96,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to updated question' do
         patch :update, params: {id: question, question: attributes_for(:question)}
-        expect(response).to render_template 'questions/_question'
+        expect(response).to render_template 'questions/_question_item'
       end
     end
 
@@ -98,8 +106,8 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'does not change question' do
         question.reload
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+        expect(question.title).to eq 'MyQuestion'
+        expect(question.body).to eq 'QuestionText'
       end
 
       it 're-render edit view' do

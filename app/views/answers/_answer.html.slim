@@ -2,7 +2,13 @@ div id= dom_id(answer)
   ul
     li= answer.body
     = render 'shared/resource_files', resource: answer
-    
+
+    .links
+      p Links:
+      ul
+        -answer.links.each do |link|
+          li= link_to link.name, link.url, target: '_blank'
+
   - if current_user&.author?(answer)
     = link_to 'Edit', edit_answer_path(answer), data:{ 'turbo-method': :post}
     = link_to 'Delete Answer', answer_path(answer), data:{ 'turbo-method': :delete}

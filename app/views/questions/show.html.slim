@@ -5,6 +5,11 @@
 
 - if current_user&.author?(@question)
   = link_to 'Edit', edit_question_path(@question), data:{ 'turbo-method': :post}
+.links
+  p Links:
+  ul
+    -@question.links.each do |link|
+      li= link_to link.name, link.url, target: '_blank'
 
 
 .answers

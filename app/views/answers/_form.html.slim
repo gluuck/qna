@@ -1,8 +1,17 @@
 - if current_user.present?
   = form_with model: [@question, @answer],
     data: {controller: 'reset-form', action: 'turbo:submit-end->reset-form#reset'} do |f|
-    = f.label :body
+    = f.label :body, 'Your answer'
     = f.text_area :body
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
+    p Links:
+    p
+      = f.fields_for :links do |l|
+        p
+          = l.label :name, 'Link name'
+          = l.text_field :name
+        p
+          = l.label :url
+          = l.text_field :url
     = f.submit 'Add Answer'
