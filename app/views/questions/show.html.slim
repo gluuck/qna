@@ -1,17 +1,18 @@
-= Time.zone.now
+= Time.now
+= render 'questions/question_item'
 
-#question_id
-h1 = @question.title
-p  = @question.body
+= render 'shared/resource_files', resource: @question
 
 - if current_user&.author?(@question)
-  = button_to 'Delete Question', question_path(@question), method: :delete
+  = link_to 'Edit', edit_question_path(@question), data:{ 'turbo-method': :post}
+
 
 .answers
   = turbo_stream_from @question, :answer_id
   #answer_id
     = render @best_answer if @question.best_answer
     = render @question.answers.where.not(id: @question.best_answer), answer: @answer
+
 
 = render 'answers/form', locals:{answer: Answer.new}
 

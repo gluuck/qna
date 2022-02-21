@@ -31,7 +31,7 @@ class QuestionsController < ApplicationController
     if current_user.author?(@question)
 
       if @question.update(question_params)
-        render turbo_stream: turbo_stream.update(@question, partial: 'questions/question', locals: {question: @question})
+        render turbo_stream: turbo_stream.update(@question, partial: 'questions/question_item', locals: {question: @question})
       else
         render turbo_stream: turbo_stream.update('notice', partial: 'questions/question_errors')
       end
@@ -55,10 +55,10 @@ class QuestionsController < ApplicationController
   private
 
   def set_question
-    @question = Question.find(params[:id])
+    @question = Question.includes(:user, :answers).with_attached_files.find(params[:id])
   end
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, files: [])
   end
 end
