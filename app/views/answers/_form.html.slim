@@ -5,13 +5,11 @@
     = f.text_area :body
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
-    p Links:
-    p
-      = f.fields_for :links do |l|
-        p
-          = l.label :name, 'Link name'
-          = l.text_field :name
-        p
-          = l.label :url
-          = l.text_field :url
+
+    h4 Links:
+    #answer
+      = f.fields_for :links do |link|
+      = link_to_add_association 'Add link', f, :links, partial: 'links/link_form',
+                data:{ association_insertion_node: '#answer', association_insertion_method: :append}
+
     = f.submit 'Add Answer'

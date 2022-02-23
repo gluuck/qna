@@ -12,4 +12,8 @@ Rails.application.routes.draw do
   resources :resource_files do
     delete :destroy, on: :member
   end
+
+  resources :links do
+    delete :destroy, on: :member
+  end
 end

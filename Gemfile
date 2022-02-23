@@ -24,6 +24,7 @@ gem "redis", "~> 4.0"
 gem 'dotenv-rails'
 gem 'jquery-rails'
 gem "cocoon"
+gem "octokit", "~> 4.0"
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 
 gem "bootsnap", require: false
