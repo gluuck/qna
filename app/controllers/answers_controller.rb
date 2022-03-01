@@ -56,7 +56,7 @@ class AnswersController < ApplicationController
     @question = @answer.question
     if current_user&.author?(@question)
       @question.set_best_answer(@answer)
-      render turbo_stream: turbo_stream.prepend('answer_id', partial: 'answers/answer', locals:{answer: @answer})
+      render turbo_stream: [turbo_stream.prepend('answer_id', partial: 'answers/answer', locals:{answer: @answer})]
     end
   end
 

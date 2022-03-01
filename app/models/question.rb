@@ -5,12 +5,15 @@ class Question < ApplicationRecord
   has_many :links, dependent: :destroy, as: :linkable
 
   has_many_attached :files
+  has_one :reward, dependent: :destroy
 
   accepts_nested_attributes_for :links, allow_destroy: true,  reject_if: :all_blank
+  accepts_nested_attributes_for :reward, reject_if: :all_blank
 
   validates :title, :body, presence: true
 
   def set_best_answer(answer)
     update(best_answer: answer)
+    reward&.update(user: answer.user)
   end
 end
