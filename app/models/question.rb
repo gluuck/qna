@@ -13,7 +13,9 @@ class Question < ApplicationRecord
   validates :title, :body, presence: true
 
   def set_best_answer(answer)
-    update(best_answer: answer)
-    reward&.update(user: answer.user)
+    transaction do
+      update!(best_answer: answer)
+      reward&.update!(user: answer.user)
+    end
   end
 end
