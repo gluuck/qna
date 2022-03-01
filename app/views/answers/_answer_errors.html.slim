@@ -1,2 +1,4 @@
 .answer-errors
-  = render 'shared/errors', resource: @answer
+    = render 'shared/errors', resource: @answer
+
+    = @answer.links.last.errors.full_messages.join(' ') if @answer.links.last.present?

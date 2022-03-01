@@ -1,8 +1,15 @@
 - if current_user.present?
   = form_with model: [@question, @answer],
     data: {controller: 'reset-form', action: 'turbo:submit-end->reset-form#reset'} do |f|
-    = f.label :body
+    = f.label :body, 'Your answer'
     = f.text_area :body
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
+
+    h4 Links:
+    #answer
+      = f.fields_for :links do |link|
+      = link_to_add_association 'Add link', f, :links, partial: 'links/link_form',
+                data:{ association_insertion_node: '#answer', association_insertion_method: :append}
+
     = f.submit 'Add Answer'

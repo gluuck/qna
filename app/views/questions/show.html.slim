@@ -3,17 +3,17 @@
 
 = render 'shared/resource_files', resource: @question
 
-- if current_user&.author?(@question)
-  = link_to 'Edit', edit_question_path(@question), data:{ 'turbo-method': :post}
-
-
+h4 Answers:
 .answers
-  = turbo_stream_from @question, :answer_id
   #answer_id
     = render @best_answer if @question.best_answer
+    
     = render @question.answers.where.not(id: @question.best_answer), answer: @answer
 
 
 = render 'answers/form', locals:{answer: Answer.new}
+
+- if current_user&.author?(@question)
+  = link_to 'Edit', edit_question_path(@question), data:{ 'turbo-method': :post}
 
 = link_to 'Back', questions_path

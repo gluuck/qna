@@ -5,6 +5,11 @@ class AnswersController < ApplicationController
   def index
   end
 
+  def new
+    @answer = Answer.new
+    @answer.links.build
+  end
+
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.build(answer_params)
@@ -27,6 +32,8 @@ class AnswersController < ApplicationController
   def update
     if @answer.update(answer_params)
       render turbo_stream: turbo_stream.update(@answer, partial: 'answers/answer', locals: {answer: @answer})
+    else
+      render turbo_stream: turbo_stream.update('notice', partial: 'answers/answer_errors')
     end
   end
 
@@ -49,17 +56,17 @@ class AnswersController < ApplicationController
     @question = @answer.question
     if current_user&.author?(@question)
       @question.set_best_answer(@answer)
-      render turbo_stream: turbo_stream.prepend('answer_id', partial: 'answers/answer', locals:{answer: @answer})
+      render turbo_stream: [turbo_stream.prepend('answer_id', partial: 'answers/answer', locals:{answer: @answer})]
     end
   end
 
   private
 
   def answer_params
-    params.require(:answer).permit(:body, files: [])
+    params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy] )
   end
 
   def set_answer
-    @answer = Answer.with_attached_files.find(params[:id])
+    @answer = Answer.includes(:links).with_attached_files.find(params[:id])
   end
 end

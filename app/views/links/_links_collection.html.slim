@@ -1,0 +1,9 @@
+- resource.links.each do |link|
+  div id= dom_id(link)
+    li= link_to link.name, link.url, target: '_blank'
+    - if link.gist?
+      - link.open_gist.each do |_, text|
+        p= text.content
+
+    - if current_user.author?(link.linkable)
+      = link_to 'Destroy link', link, data:{'turbo-method': :delete}
