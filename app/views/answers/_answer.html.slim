@@ -2,7 +2,7 @@ div id= dom_id(answer)
   ul
     li= answer.body
     = render 'shared/resource_files', resource: answer
-
+    = render 'shared/vote', resource: answer  
     p Links:
     ul
       =render 'links/links_collection', resource: answer

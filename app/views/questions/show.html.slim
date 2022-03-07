@@ -1,13 +1,13 @@
 = Time.now
 = render 'questions/question_item'
-
+= render 'shared/vote', resource: @question
 = render 'shared/resource_files', resource: @question
 
 h4 Answers:
 .answers
   #answer_id
     = render @best_answer if @question.best_answer
-    
+
     = render @question.answers.where.not(id: @question.best_answer), answer: @answer
 
 

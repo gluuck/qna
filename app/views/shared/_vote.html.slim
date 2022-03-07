@@ -1,0 +1,16 @@
+.vote
+  #rating
+    div id= "#{dom_id(resource)}"
+      = "Rating: #{resource.rating}"
+    - if user_signed_in? && !current_user.author?(resource)
+      = link_to 'Up', polymorphic_path(resource, action: :vote_up),
+                data: { 'turbo-method': :put, type: :turbo },
+                remote: true
+      = link_to 'Down',
+                polymorphic_path(resource, action: :vote_down),
+                data: { 'turbo-method': :put, type: :turbo },
+                remote: true
+      = link_to 'Destroy',
+                polymorphic_path(resource, action: :destroy_vote),
+                data: { 'turbo-method': :delete, type: :turbo },
+                remote: true
