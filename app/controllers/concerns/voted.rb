@@ -18,19 +18,19 @@ module Voted
     end
   end
 
-  def create_vote(value)
-    @vote = @votable.votes.build(user: current_user, value: value)
-    if @vote.save
-      render_response
-    end
-  end
-
   def destroy_vote
     @vote.delete if @vote.present?
     render_response
   end
 
   private
+
+  def create_vote(value)
+    @vote = @votable.votes.build(user: current_user, value: value)
+    if @vote.save
+      render_response
+    end
+  end
 
   def model_klass
     controller_name.classify.constantize

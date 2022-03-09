@@ -6,7 +6,7 @@ module Votable
   end
 
   def rating
-    votes.sum(&:value)
+    votes.sum(:value)
   end
 
   def vote_author?(user)
