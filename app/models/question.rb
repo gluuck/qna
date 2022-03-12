@@ -1,11 +1,12 @@
 class Question < ApplicationRecord
   include Votable
+  include Commentable
 
   belongs_to :user
   belongs_to :best_answer, class_name: 'Answer', optional: true
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
-
+  
   has_many_attached :files
   has_one :reward, dependent: :destroy
 
@@ -13,6 +14,14 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :reward, reject_if: :all_blank
 
   validates :title, :body, presence: true
+
+  after_commit on: :create  do
+    broadcast_append_to(
+      partial: 'questions/question',
+      locals:{question: self},
+      target: 'all_questions'
+    )
+  end
 
   def set_best_answer(answer)
     transaction do

@@ -2,8 +2,15 @@
 = render 'questions/question_item'
 = render 'shared/vote', resource: @question
 = render 'shared/resource_files', resource: @question
+= turbo_stream_from @question, :comments
+= tag.div id: "#{dom_id(@question)}_comments" do
+  = render @question.comments
+
+- if user_signed_in?
+  = render partial: 'comments/form', locals:{commentable: @question , comment: Comment.new}
 
 h4 Answers:
+= turbo_stream_from @question, :answers
 .answers
   #answer_id
     = render @best_answer if @question.best_answer

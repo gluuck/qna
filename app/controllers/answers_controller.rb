@@ -54,6 +54,22 @@ class AnswersController < ApplicationController
     end
   end
 
+  def render_comment
+    @question = Question.find(params[:question_id])
+    AnswersController.renderer.instance_variable_set(:@env, {"HTTP_HOST"=>"localhost:3000", 
+      "HTTPS"=>"off", 
+      "REQUEST_METHOD"=>"GET", 
+      "SCRIPT_NAME"=>"",   
+      "warden" => warden})
+  
+    AnswersController.render(
+      partial: @question.answers,
+      locals: {
+        answer: @answer
+      }
+    )
+  end
+
   def best_answer
     @question = @answer.question
     if current_user&.author?(@question)

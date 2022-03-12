@@ -1,8 +1,11 @@
 class QuestionsController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_question, only: %i[show edit update destroy]
+  #after_action :publish_question, only: %i[create]
+
   def index
     @questions = Question.all
   end
@@ -10,7 +13,7 @@ class QuestionsController < ApplicationController
   def show
     @answer = Answer.new
     @best_answer = @question.best_answer
-    @answer.links.build
+    @answer.links.build 
   end
 
   def new
@@ -66,5 +69,5 @@ class QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(:title, :body, files: [],
       links_attributes: [:id, :name, :url, :_destroy], reward_attributes: [:name, :image] )
-  end
+  end   
 end
