@@ -4,7 +4,8 @@ div id= dom_id(answer)
     = turbo_stream_from answer, :comments
     = tag.div id: "#{dom_id(answer)}_comments" do
       = render partial: answer.comments
-    = link_to 'New comment', new_comment_answer_path(answer), data:{turbo_frame: 'modal'}
+    - if user_signed_in?
+      = link_to 'New comment', new_comment_answer_path(answer), data:{turbo_frame: 'modal'}
 
     = render 'shared/resource_files', resource: answer
     = render 'shared/vote', resource: answer
