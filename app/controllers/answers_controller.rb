@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, only: %i[create update destroy best_answer]
   before_action :set_answer, only: %i[show edit update destroy best_answer]
@@ -56,12 +57,12 @@ class AnswersController < ApplicationController
 
   def render_comment
     @question = Question.find(params[:question_id])
-    AnswersController.renderer.instance_variable_set(:@env, {"HTTP_HOST"=>"localhost:3000", 
-      "HTTPS"=>"off", 
-      "REQUEST_METHOD"=>"GET", 
-      "SCRIPT_NAME"=>"",   
+    AnswersController.renderer.instance_variable_set(:@env, {"HTTP_HOST"=>"localhost:3000",
+      "HTTPS"=>"off",
+      "REQUEST_METHOD"=>"GET",
+      "SCRIPT_NAME"=>"",
       "warden" => warden})
-  
+
     AnswersController.render(
       partial: @question.answers,
       locals: {

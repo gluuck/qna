@@ -8,6 +8,6 @@ class Comment < ApplicationRecord
   validates :body, :user, presence: true
 
   after_create_commit -> {broadcast_append_to [commentable, :comments],
-    partial: 'comments/comment', 
+    partial: 'comments/comment',
     target: "#{dom_id(commentable)}_comments"}
 end

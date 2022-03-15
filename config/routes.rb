@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   concern :commented do
     member do
+      get :new_comment
       post :create_comment
     end
   end

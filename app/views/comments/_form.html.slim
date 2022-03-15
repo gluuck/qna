@@ -1,6 +1,0 @@
-= turbo_frame_tag :modal do
-  = form_with model:[commentable, comment], id: dom_id_for_records(commentable, comment), 
-    url: commentable.is_a?(Question) ? create_comment_question_path(commentable) : create_comment_answer_path(commentable) do |form|
-    = render 'shared/errors', resource: form.object
-    = form.rich_text_area :body
-    = form.submit

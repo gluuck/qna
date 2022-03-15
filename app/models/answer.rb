@@ -1,7 +1,7 @@
 class Answer < ApplicationRecord
   include Votable
   include Commentable
-  
+
   belongs_to :user
   belongs_to :question
 
@@ -17,8 +17,8 @@ class Answer < ApplicationRecord
       target: 'answer_id'
     )
   end
-  
+
   accepts_nested_attributes_for :links, allow_destroy: true, reject_if: :all_blank
 
-  validates :body, presence: true  
+  validates :body, presence: true
 end

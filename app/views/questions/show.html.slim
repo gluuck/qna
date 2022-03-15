@@ -7,8 +7,8 @@
   = render @question.comments
 
 - if user_signed_in?
-  = render partial: 'comments/form', locals:{commentable: @question , comment: Comment.new}
-
+  = link_to 'New comment', new_comment_question_path(@question), data:{turbo_frame: 'modal'}
+  
 h4 Answers:
 = turbo_stream_from @question, :answers
 .answers

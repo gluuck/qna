@@ -4,8 +4,12 @@ module Commented
   include RecordHelper
 
   included do
-    before_action :authenticate_user! 
-    before_action :set_commentable, only: [:create_comment]    
+    before_action :authenticate_user!
+    before_action :set_commentable, only: [:create_comment, :new_comment]
+  end
+
+  def new_comment
+    @comment = @commentable.comments.new
   end
 
   def create_comment
@@ -24,7 +28,7 @@ module Commented
       end
     end
   end
-  
+
   private
 
   def comment_params
@@ -34,7 +38,7 @@ module Commented
   def model_klass
     controller_name.classify.constantize
   end
-  
+
   def set_commentable
     @commentable = model_klass.find(params[:id])
   end

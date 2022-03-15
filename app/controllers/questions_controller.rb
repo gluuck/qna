@@ -13,7 +13,7 @@ class QuestionsController < ApplicationController
   def show
     @answer = Answer.new
     @best_answer = @question.best_answer
-    @answer.links.build 
+    @answer.links.build
   end
 
   def new
@@ -69,5 +69,5 @@ class QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(:title, :body, files: [],
       links_attributes: [:id, :name, :url, :_destroy], reward_attributes: [:name, :image] )
-  end   
+  end
 end
