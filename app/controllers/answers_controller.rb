@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, only: %i[create update destroy best_answer]
   before_action :set_answer, only: %i[show edit update destroy best_answer]
@@ -52,6 +53,22 @@ class AnswersController < ApplicationController
         format.html{redirect_to @answer.question, notice: 'You can`t delete answer'}
       end
     end
+  end
+
+  def render_comment
+    @question = Question.find(params[:question_id])
+    AnswersController.renderer.instance_variable_set(:@env, {"HTTP_HOST"=>"localhost:3000",
+      "HTTPS"=>"off",
+      "REQUEST_METHOD"=>"GET",
+      "SCRIPT_NAME"=>"",
+      "warden" => warden})
+
+    AnswersController.render(
+      partial: @question.answers,
+      locals: {
+        answer: @answer
+      }
+    )
   end
 
   def best_answer

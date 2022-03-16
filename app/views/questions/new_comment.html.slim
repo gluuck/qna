@@ -1,0 +1,7 @@
+= turbo_frame_tag :modal do
+  div data-controller='turbomodal' data-action='turbo:submit-end->turbomodal#submitEnd'
+    = form_with model:[@commentable, @comment], id: dom_id_for_records(@commentable, @comment),
+      url:  create_comment_question_path(@commentable) do |form|
+      = render 'shared/errors', resource: form.object
+      = form.rich_text_area :body
+      = form.submit

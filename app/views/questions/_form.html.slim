@@ -1,23 +1,24 @@
-= form_with model: @question, local: true do |f|
-  p
-    = f.label :title
-    = f.text_field :title
-  p
-    = f.label :body
-    = f.text_area :body
-  p
-    = f.label :files
-    = f.file_field :files, multiple: true, direct_upload: true
-  p Links:
-  #links
-    = f.fields_for :links do |link|
-    = link_to_add_association 'Add link', f, :links, partial: 'links/link_form',
-            data:{ association_insertion_node: '#links', association_insertion_method: :append}
-    = f.submit 'Ask'
-  #reward
-    = f.fields_for :reward do |r|
-      = r.label :name, 'Reward name'
-      = r.text_field :name, class: 'form-control'
+= turbo_frame_tag 'modal' do
+  = form_with model: @question, local: true do |f|
+    p
+      = f.label :title
+      = f.text_field :title
+    p
+      = f.label :body
+      = f.text_area :body
+    p
+      = f.label :files
+      = f.file_field :files, multiple: true, direct_upload: true
+    p Links:
+    #links
+      = f.fields_for :links do |link|
+      = link_to_add_association 'Add link', f, :links, partial: 'links/link_form',
+              data:{ association_insertion_node: '#links', association_insertion_method: :append}
+      = f.submit 'Ask'
+    #reward
+      = f.fields_for :reward do |r|
+        = r.label :name, 'Reward name'
+        = r.text_field :name, class: 'form-control'
 
-      = r.label :image
-      = r.file_field :image, class: 'form-control', direct_upload: true
+        = r.label :image
+        = r.file_field :image, class: 'form-control', direct_upload: true

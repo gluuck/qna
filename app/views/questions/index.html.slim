@@ -1,13 +1,14 @@
 #all_questions
+  = turbo_stream_from @question
   h3 'All Questions'
   table
     thead
       tr
         th Title
-        th Body
         th Action
     tbody
-    #question_error
-      = render @questions.order(created_at: :asc), question: @question
+
+    = render @questions.order(id: :asc), question: @question
+      #questions
 #new_question
-  p= link_to 'Ask question', new_question_path
+  p= link_to 'Ask question', new_question_path, data:{turbo_frame: 'modal'}
