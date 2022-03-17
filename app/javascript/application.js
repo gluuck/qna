@@ -7,3 +7,6 @@ import "@rails/actioncable"
 import "channels"
 import "trix"
 import "@rails/actiontext"
+import Rails from '@rails/ujs';
+
+Rails.start();
