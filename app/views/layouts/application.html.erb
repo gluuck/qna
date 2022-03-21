@@ -16,7 +16,7 @@
     <%= render 'shared/nav'%>
 
     <p id='notice' class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <p id='alert' class="alert"><%= alert %></p>
     <%= turbo_frame_tag "modal" %>
 
     <%= yield %>

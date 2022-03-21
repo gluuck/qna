@@ -19,6 +19,6 @@ h4 Answers:
 
 
 = render 'answers/form', locals:{answer: Answer.new}
-
-- if current_user&.author?(@question)
-  = link_to 'Edit', edit_question_path(@question), data:{ 'turbo-method': :post}
+- if current_user
+  - if policy(@question).edit?
+    = link_to 'Edit', edit_question_path(@question), data:{ 'turbo-method': :post}

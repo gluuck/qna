@@ -31,6 +31,8 @@ gem 'omniauth-github', github: 'omniauth/omniauth-github', branch: 'master'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-vkontakte'
 gem "bootsnap", require: false
+gem 'cancancan'
+gem 'pundit'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]

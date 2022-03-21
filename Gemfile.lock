@@ -99,6 +99,7 @@ GEM
     bootsnap (1.10.1)
       msgpack (~> 1.2)
     builder (3.2.4)
+    cancancan (3.3.0)
     capybara (3.36.0)
       addressable
       matrix
@@ -257,6 +258,8 @@ GEM
       nio4r (~> 2.0)
     puma (5.5.2-java)
       nio4r (~> 2.0)
+    pundit (2.2.0)
+      activesupport (>= 3.0.0)
     racc (1.6.0)
     racc (1.6.0-java)
     rack (2.2.3)
@@ -389,6 +392,7 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk-s3
   bootsnap
+  cancancan
   capybara
   capybara-email
   cocoon
@@ -408,6 +412,7 @@ DEPENDENCIES
   omniauth-vkontakte
   pg (~> 1.1)
   puma (~> 5.0)
+  pundit
   rails (~> 7.0.1)
   rails-controller-testing
   redis (~> 4.0)

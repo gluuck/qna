@@ -4,7 +4,9 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_question, only: %i[show edit update destroy]
-  #after_action :publish_question, only: %i[create]
+  before_action :authorize_question!
+  after_action  :verify_authorized
+
 
   def index
     @questions = Question.all
@@ -36,28 +38,19 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if current_user.author?(@question)
-
-      if @question.update(question_params)
-        render turbo_stream: turbo_stream.update(@question, partial: 'questions/question_item', locals: {question: @question})
-      else
-        render turbo_stream: turbo_stream.update('notice', partial: 'questions/question_errors')
-      end
+    if @question.update(question_params)
+      render turbo_stream: turbo_stream.update(@question, partial: 'questions/question_item', locals: {question: @question})
     else
-
-    end
+      render turbo_stream: turbo_stream.update('notice', partial: 'questions/question_errors')
+    end    
   end
 
   def destroy
     respond_to do |format|
-      if current_user.author?(@question)
-        @question.delete
-          format.turbo_stream {render turbo_stream: turbo_stream.remove(@question)}
-          format.html {redirect_to questions_path, notice: 'Your question successfully deleted'}
-      else
-        format.html {redirect_to @question, notice: 'Cannot be deleted. You are not the author of the question.'}
-      end
-    end
+      @question.delete
+        format.turbo_stream {render turbo_stream: turbo_stream.remove(@question)}
+        format.html {redirect_to questions_path, notice: 'Your question successfully deleted'}  
+    end    
   end
 
   private
@@ -70,4 +63,9 @@ class QuestionsController < ApplicationController
     params.require(:question).permit(:title, :body, files: [],
       links_attributes: [:id, :name, :url, :_destroy], reward_attributes: [:name, :image] )
   end
+
+  def authorize_question!
+    authorize(@question || Question)
+  end
+  
 end
