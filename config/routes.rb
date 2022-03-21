@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks', confirmations: 'users/confirmations' }
   root to: 'questions#index'
 
   concern :vote do
@@ -37,4 +37,8 @@ Rails.application.routes.draw do
   resources :rewards, only: :index
 
   mount ActionCable.server => '/cable'
+
+  namespace :users do
+    resources :emails, only: [:new, :create]
+  end
 end

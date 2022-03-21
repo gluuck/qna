@@ -8,7 +8,7 @@
 
 - if user_signed_in?
   = link_to 'New comment', new_comment_question_path(@question), data:{turbo_frame: 'modal'}
-  
+
 h4 Answers:
 = turbo_stream_from @question, :answers
 .answers
@@ -22,5 +22,3 @@ h4 Answers:
 
 - if current_user&.author?(@question)
   = link_to 'Edit', edit_question_path(@question), data:{ 'turbo-method': :post}
-
-= link_to 'Back', questions_path
