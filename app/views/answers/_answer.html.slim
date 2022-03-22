@@ -13,8 +13,9 @@ div id= dom_id(answer)
     ul
       =render 'links/links_collection', resource: answer
 
-  - if current_user&.author?(answer)
+  - if policy(answer).update?
     = link_to 'Edit', edit_answer_path(answer), data:{ 'turbo-method': :post}
+  - if policy(answer).destroy?  
     = link_to 'Delete Answer', answer_path(answer), data:{ 'turbo-method': :delete}
 
   -if current_user&.author?(@question)

@@ -4,6 +4,8 @@ class AnswersController < ApplicationController
 
   before_action :authenticate_user!, only: %i[create update destroy best_answer]
   before_action :set_answer, only: %i[show edit update destroy best_answer]
+  before_action :authorize_answer!
+  after_action  :verify_authorized
 
   def index
   end
@@ -13,10 +15,9 @@ class AnswersController < ApplicationController
     @answer.links.build
   end
 
-  def create
+  def create    
     @question = Question.find(params[:question_id])
-    @answer = @question.answers.build(answer_params)
-    @answer.user = current_user
+    @answer = current_user.answers.build(answer_params.merge(question_id: @question.id))
     if @answer.save
       render turbo_stream: [ turbo_stream.update('answer_id', partial: @question.answers, locals: {answer: Answer.new}),
                              turbo_stream.update('notice', 'Your answer successfully created.' ) ]
@@ -40,18 +41,14 @@ class AnswersController < ApplicationController
     end
   end
 
-  def destroy
+  def destroy    
     respond_to do |format|
-      if current_user.author?(@answer)
-          @answer.delete
-            format.turbo_stream do
-              render turbo_stream: [turbo_stream.remove(@answer),
-                                    turbo_stream.update('notice', 'Your answer successfully deleted')]
-            end
-            format.html{redirect_to @answer.question, notice: 'Your answer successfully deleted'}
-      else
-        format.html{redirect_to @answer.question, notice: 'You can`t delete answer'}
-      end
+      @answer.delete
+        format.turbo_stream do
+          render turbo_stream: [turbo_stream.remove(@answer),
+                                turbo_stream.update('notice', 'Your answer successfully deleted')]
+        end
+        format.html{redirect_to @answer.question, notice: 'Your answer successfully deleted'}      
     end
   end
 
@@ -82,10 +79,15 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy] )
+    params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy])
   end
 
   def set_answer
     @answer = Answer.includes(:links).with_attached_files.find(params[:id])
   end
+
+  def authorize_answer!
+    authorize(@answer || Answer)
+  end
+  
 end

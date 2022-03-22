@@ -5,6 +5,10 @@ class QuestionPolicy < ApplicationPolicy
     end
   end
 
+  def index?
+    true
+  end
+
   def update?
     user.admin? || user.author?(record)
   end

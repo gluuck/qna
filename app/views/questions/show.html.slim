@@ -13,12 +13,13 @@ h4 Answers:
 = turbo_stream_from @question, :answers
 .answers
   #answer_id
-    = render @best_answer if @question.best_answer
+    - if policy(Question).show?
+      = render @best_answer if @question.best_answer
 
-    = render @question.answers.where.not(id: @question.best_answer), answer: @answer
+      = render @question.answers.where.not(id: @question.best_answer), answer: @answer
 
-
-= render 'answers/form', locals:{answer: Answer.new}
+- if policy(Answer).create?
+  = render 'answers/form', locals:{answer: Answer.new}
 - if current_user
   - if policy(@question).edit?
     = link_to 'Edit', edit_question_path(@question), data:{ 'turbo-method': :post}
