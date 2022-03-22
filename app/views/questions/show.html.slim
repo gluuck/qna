@@ -6,7 +6,7 @@
 = tag.div id: "#{dom_id(@question)}_comments" do
   = render @question.comments
 
-- if user_signed_in?
+- if policy(Comment).create_comment?
   = link_to 'New comment', new_comment_question_path(@question), data:{turbo_frame: 'modal'}
 
 h4 Answers:

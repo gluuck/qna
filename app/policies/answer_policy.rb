@@ -20,4 +20,12 @@ class AnswerPolicy < ApplicationPolicy
   def best_answer?
     user&.admin? || user&.author?(record&.question)
   end
+
+  def new_comment?
+    user&.present?
+  end
+
+  def create_comment?
+    user&.present?
+  end  
 end

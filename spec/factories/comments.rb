@@ -3,6 +3,6 @@ FactoryBot.define do
     user { nil }
     commentable { nil }
     parent_id { 1 }
-    body { nil }
+    body { 'Body comment' }
   end
 end

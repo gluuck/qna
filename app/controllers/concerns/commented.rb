@@ -10,9 +10,11 @@ module Commented
 
   def new_comment
     @comment = @commentable.comments.new
+    authorize @comment
   end
 
   def create_comment
+    authorize Comment
     @comment = @commentable.comments.build(comment_params)
     @comment.user = current_user
     respond_to do |format|
