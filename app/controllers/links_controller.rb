@@ -3,9 +3,8 @@ class LinksController < ApplicationController
 
   def destroy
     @link = Link.find(params[:id])
-    if current_user.author?(@link.linkable)
-      @link.delete
-      render turbo_stream: turbo_stream.remove(@link)
-    end  
+    authorize (@link.linkable)
+    @link.delete
+    render turbo_stream: turbo_stream.remove(@link)    
   end
 end
