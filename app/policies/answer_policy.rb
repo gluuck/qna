@@ -28,4 +28,16 @@ class AnswerPolicy < ApplicationPolicy
   def create_comment?
     user&.present?
   end  
+
+  def vote_up?
+    user&.present?
+  end
+
+  def destroy_vote?
+    user&.present? 
+  end
+  
+  def vote_down?
+    user&.present?
+  end  
 end
