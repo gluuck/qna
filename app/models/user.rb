@@ -12,7 +12,7 @@ class User < ApplicationRecord
   has_many :authorizations, dependent: :destroy
 
   def author?(object)
-    object&.user_id == id
+    object&.user_id == self.id
   end
 
   def self.from_omniauth(auth)

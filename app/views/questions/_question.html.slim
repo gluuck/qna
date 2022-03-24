@@ -1,5 +1,5 @@
 tr
   th id="#{dom_id(question)}"= link_to question.title, question_path(question)
-  
-  - if !current_user.nil? && current_user&.author?(question)
-    th= link_to 'Delete question', question_path(question), data:{ 'turbo-method': :delete}
+  - if current_user
+    -if policy(question).destroy?
+      th= link_to 'Delete question', question_path(question), data:{ 'turbo-method': :delete}

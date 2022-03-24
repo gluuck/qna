@@ -27,6 +27,7 @@ module Voted
 
   def create_vote(value)
     @vote = @votable.votes.build(user: current_user, value: value)
+    authorize @vote
     if @vote.save
       render_response
     end
@@ -37,7 +38,7 @@ module Voted
   end
 
   def set_votable_object
-    @votable = model_klass.find(params[:id])
+    @votable = model_klass.find(params[:id])    
   end
 
   def set_vote

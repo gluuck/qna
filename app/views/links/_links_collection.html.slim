@@ -5,5 +5,5 @@
       - link.open_gist.each do |_, text|
         p= text.content
 
-    - if current_user.author?(link.linkable)
+    - if policy(link.linkable).destroy?
       = link_to 'Destroy link', link, data:{'turbo-method': :delete}
