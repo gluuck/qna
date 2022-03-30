@@ -33,6 +33,9 @@ gem 'omniauth-vkontakte'
 gem "bootsnap", require: false
 gem 'cancancan'
 gem 'pundit'
+gem 'doorkeeper'
+gem 'blueprinter'
+gem 'oj'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]

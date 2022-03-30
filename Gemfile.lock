@@ -96,6 +96,7 @@ GEM
     bcrypt (3.1.16)
     bcrypt (3.1.16-java)
     bindex (0.8.1)
+    blueprinter (0.25.3)
     bootsnap (1.10.1)
       msgpack (~> 1.2)
     builder (3.2.4)
@@ -128,6 +129,8 @@ GEM
     diff-lcs (1.5.0)
     digest (3.1.0)
     digest (3.1.0-java)
+    doorkeeper (5.5.4)
+      railties (>= 5)
     dotenv (2.7.6)
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
@@ -237,6 +240,7 @@ GEM
     octokit (4.22.0)
       faraday (>= 0.9)
       sawyer (~> 0.8.0, >= 0.5.3)
+    oj (3.13.11)
     omniauth (2.0.4)
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
@@ -391,6 +395,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk-s3
+  blueprinter
   bootsnap
   cancancan
   capybara
@@ -398,6 +403,7 @@ DEPENDENCIES
   cocoon
   debug
   devise
+  doorkeeper
   dotenv-rails
   factory_bot_rails
   importmap-rails
@@ -406,6 +412,7 @@ DEPENDENCIES
   launchy
   letter_opener
   octokit (~> 4.0)
+  oj
   omniauth
   omniauth-github!
   omniauth-rails_csrf_protection

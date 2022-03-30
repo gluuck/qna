@@ -1,0 +1,22 @@
+class QuestionBlueprint < Blueprinter::Base
+  identifier :id
+
+  view :normal do
+    field  :title, name: :title_question do |question|
+      question.title.truncate(7)
+    end
+
+    fields :body, :user_id
+  end
+
+  view :extended do
+    field  :title, name: :title_question
+    fields :body,  :user_id
+    association :best_answer, blueprint: AnswerBlueprint
+
+    association :answers, blueprint: AnswerBlueprint do |question|
+      question.answers.where.not(id: question.best_answer)
+    end
+    association :comments, blueprint: CommentBlueprint
+  end
+end
