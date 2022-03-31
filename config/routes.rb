@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks', confirmations: 'users/confirmations' }
   root to: 'questions#index'
 
@@ -40,5 +41,16 @@ Rails.application.routes.draw do
 
   namespace :users do
     resources :emails, only: [:new, :create]
+  end
+
+  namespace :api, defaults:{format: :json} do
+    namespace :v1 do
+      resources :profiles, only: [] do
+        get :me, on: :collection
+        get :all, on: :collection
+      end
+      resources :questions, only: %i[index show create update destroy]
+      resources :answers ,only: %i[create update destroy]
+    end
   end
 end
