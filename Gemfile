@@ -36,6 +36,7 @@ gem 'pundit'
 gem 'doorkeeper'
 gem 'blueprinter'
 gem 'oj'
+gem 'active_model_serializers', '~> 0.10'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
