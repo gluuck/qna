@@ -23,10 +23,18 @@ class Question < ApplicationRecord
     )
   end
 
+  after_create :calculate_reputation
+
   def set_best_answer(answer)
     transaction do
       update!(best_answer: answer)
       reward&.update!(user: answer.user)
     end
+  end
+
+  private
+
+  def calculate_reputation
+    ReputationJob.perform_later(self)
   end
 end
