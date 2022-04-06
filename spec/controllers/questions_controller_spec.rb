@@ -74,6 +74,23 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template('questions/_question_errors')
       end
     end
+
+    context 'subscription' do
+      it 'create with question' do
+        expect { post :create, params: { question: attributes_for(:question) } }
+          .to change(Subscription, :count).by(1)
+      end
+
+      it 'association with author question' do
+        post :create, params: { question: attributes_for(:question) }
+        expect(Question.first.subscriptions.first.user).to eq user
+      end
+
+      it 'can not create without question' do
+        expect { post :create, params: { question: attributes_for(:question, :invalid) } }
+          .to_not change(Subscription, :count)
+      end
+    end
   end
 
   describe 'PATCH #update' do

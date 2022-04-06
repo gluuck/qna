@@ -1,5 +1,7 @@
 = Time.now
 = render 'questions/question_item'
+#subscriptions
+  = render 'subscriptions/subscribe' , resource: @question
 = render 'shared/vote', resource: @question
 = render 'shared/resource_files', resource: @question
 = turbo_stream_from @question, :comments

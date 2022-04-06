@@ -8,6 +8,7 @@ RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:links).dependent(:destroy) }
   it { should have_many(:votes).dependent(:destroy) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
   it { should belong_to(:user) }
 
   it{ should accept_nested_attributes_for :links }
@@ -18,10 +19,10 @@ RSpec.describe Question, type: :model do
     expect(question.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 
-  describe 'reputation' do 
+  describe 'reputation' do
     let(:question) { build(:question)}
 
-    it 'calls ReputationJob' do 
+    it 'calls ReputationJob' do
       expect(ReputationJob).to receive(:perform_later).with(question)
       question.save!
     end

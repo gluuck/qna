@@ -6,6 +6,7 @@ class Question < ApplicationRecord
   belongs_to :best_answer, class_name: 'Answer', optional: true
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
+  has_many :subscriptions, dependent: :destroy
   
   has_many_attached :files
   has_one :reward, dependent: :destroy
@@ -24,6 +25,7 @@ class Question < ApplicationRecord
   end
 
   after_create :calculate_reputation
+  after_create :get_subscription
 
   def set_best_answer(answer)
     transaction do
@@ -36,5 +38,9 @@ class Question < ApplicationRecord
 
   def calculate_reputation
     ReputationJob.perform_later(self)
+  end
+
+  def get_subscription
+    subscriptions.create(user: user)
   end
 end
