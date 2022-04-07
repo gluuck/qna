@@ -16,6 +16,7 @@ class QuestionsController < ApplicationController
     @answer = Answer.new
     @best_answer = @question.best_answer
     @answer.links.build
+    @subscription = Subscription.find_by(user: current_user, question: @question)
   end
 
   def new

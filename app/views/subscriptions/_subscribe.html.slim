@@ -1,0 +1,8 @@
+- if current_user
+  - if @subscription.nil?
+    = link_to 'Subscribe' , question_subscriptions_path(resource), data: {'turbo-method': :post}
+    
+  - else
+    = link_to 'Unsubscribe',  subscription_path(@subscription),  data: {'turbo-method': :delete}      
+    
+    

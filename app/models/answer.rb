@@ -18,7 +18,13 @@ class Answer < ApplicationRecord
     )
   end
 
+  after_create :send_delivery_of_answer
+
   accepts_nested_attributes_for :links, allow_destroy: true, reject_if: :all_blank
 
   validates :body, presence: true
+
+  def send_delivery_of_answer
+    DeliveryOfAnswerJob.perform_later(self)
+  end
 end
