@@ -40,6 +40,8 @@ gem 'active_model_serializers', '~> 0.10'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'whenever', require: false
+gem 'mysql2'
+gem 'thinking-sphinx'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
