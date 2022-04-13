@@ -1,6 +1,7 @@
 class Answer < ApplicationRecord
   include Votable
   include Commentable
+  ThinkingSphinx::Callbacks.append(self, :behaviours => [:sql])
 
   belongs_to :user
   belongs_to :question
@@ -26,5 +27,5 @@ class Answer < ApplicationRecord
 
   def send_delivery_of_answer
     DeliveryOfAnswerJob.perform_later(self)
-  end
+  end  
 end

@@ -1,5 +1,6 @@
 class Comment < ApplicationRecord
   include ActionView::RecordIdentifier
+  ThinkingSphinx::Callbacks.append(self, :behaviours => [:sql])
 
   belongs_to :user
   belongs_to :commentable, polymorphic: true

@@ -22,7 +22,7 @@ class QuestionPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.admin? || user.author?(record)
+    user&.admin? || user&.author?(record)
   end
 
   def new_comment?

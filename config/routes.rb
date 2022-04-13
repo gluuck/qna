@@ -62,4 +62,6 @@ Rails.application.routes.draw do
       resources :answers ,only: %i[create update destroy]
     end
   end
+
+  get '/search', to: 'search#search'
 end
