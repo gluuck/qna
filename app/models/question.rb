@@ -1,6 +1,7 @@
 class Question < ApplicationRecord
   include Votable
   include Commentable
+  ThinkingSphinx::Callbacks.append(self, :behaviours => [:sql])
 
   belongs_to :user
   belongs_to :best_answer, class_name: 'Answer', optional: true

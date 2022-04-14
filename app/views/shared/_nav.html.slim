@@ -1,12 +1,15 @@
 nav class="navbar navbar-expand-lg navbar-light bg-light"
   div class="container-fluid"
-    = link_to 'Questions', questions_path, class: "nav-link active"
-
-    div class="collapse navbar-collapse" id="navbarNavAltMarkup"
-      div class="navbar-nav"
-        - unless current_user.present?
-          = link_to 'Sign in', new_user_session_path, class: "nav-link active", 'aria-current': "page"
-          = link_to 'Sign up', new_user_registration_path, class: "nav-link active", 'aria-current': "page"
-        - else
-          = link_to 'Exit', destroy_user_session_path , 'data-turbo-method': :delete, class: "nav-link active", 'aria-current': "page"
-          = link_to 'Rewards', rewards_path, class: "nav-link active", 'aria-current': "page"
+    = link_to 'Questions', questions_path, class: "nav-link active" 
+       
+    - unless current_user.present?
+      = link_to 'Sign in', new_user_session_path, class: "nav-link active", 'aria-current': "page"
+      = link_to 'Sign up', new_user_registration_path, class: "nav-link active", 'aria-current': "page"
+    - else
+      = link_to 'Exit', destroy_user_session_path , 'data-turbo-method': :delete, class: "nav-link active", 'aria-current': "page"
+      = link_to 'Rewards', rewards_path, class: "nav-link active", 'aria-current': "page"
+    = form_with url: search_path, local: true, method: :get do |f|        
+      = f.search_field :search_body, oninput: "this.form.requestSubmit()",  class: 'form-control'
+      = f.select :type, SearchService::TYPES , class: 'form-control'
+= render 'search/search'
+      
